@@ -4,12 +4,10 @@ version = "0.1.0"
 description = "Hugging Face LLM Transformers Course"
 readme = "README.md"
 authors = [
-    { name = "Rajdeep Sandhu", email = "168480080+rajdeep-sandhu@users.noreply.github.com" }
+    { name = "Rajdeep Sandhu", email = "168480080+rajdeep-sandhu@users.noreply.github.com" },
 ]
 requires-python = ">=3.15"
-dependencies = [
-    "marimo[recommended, lsp]>=0.25.2",
-]
+dependencies = ["marimo[recommended, lsp]>=0.25.2"]
 
 [project.scripts]
 hf-llm-transformers-course = "hf_llm_transformers_course:main"
@@ -19,11 +17,28 @@ requires = ["uv_build>=0.13.9,<0.14.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = [
-    "pyrefly>=1.5.0",
-]
+dev = ["pyrefly>=1.5.0"]
 
 # Amend as per package path.
 [tool.uv.build-backend]
 module-name = "hf_llm_transformers_course"
 module-root = "src"
+
+[tool.marimo.completion]
+signature_hint_on_typing = true
+
+[tool.marimo.display]
+default_width = "full"
+
+[tool.marimo.language_servers.pyrefly]
+enabled = true
+
+[tool.marimo.package_management]
+manager = "uv"
+
+[tool.marimo.runtime]
+auto_instantiate = true
+auto_reload = "autorun"
+
+[tool.marimo.save]
+format_on_save = true
