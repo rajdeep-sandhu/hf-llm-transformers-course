@@ -8,7 +8,7 @@ authors = [
 ]
 requires-python = ">=3.15"
 dependencies = [
-    "marimo[recommended]>=0.25.2",
+    "marimo[recommended, lsp]>=0.25.2",
 ]
 
 [project.scripts]
