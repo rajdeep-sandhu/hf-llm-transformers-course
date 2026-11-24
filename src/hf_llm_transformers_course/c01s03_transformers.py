@@ -1,7 +1,7 @@
 # /// script
 # dependencies = [
 #     "marimo",
-#     "transformers[sentencepiece]==5.24.0",
+#     "transformers[torch, sentencepiece]==5.24.0",
 # ]
 # requires-python = ">=3.15"
 # ///
@@ -27,13 +27,14 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    - Run this notebookin sandbox mode.
+    - Run this notebook in sandbox mode. From project root:
+
+        ```bash
+        marimo edit --sandbox --watch "src/hf_llm_transformers_course/c01s03_transformers.py"
+        ```
+
+    - The notebook contains examples in addition to those from the course.
     """)
-    return
-
-
-@app.cell
-def _():
     return
 
 
