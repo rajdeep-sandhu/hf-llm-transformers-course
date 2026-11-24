@@ -42,6 +42,8 @@ def _():
 def _():
     mo.md(r"""
     ## Sentiment Analysis
+
+    Assigns a sentiment and confidence score to the text.
     """)
     return
 
