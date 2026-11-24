@@ -126,5 +126,22 @@ def _():
     return
 
 
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Named Entity Recognition
+
+    Identifies entities like persons, organisations or locations in a sentence.
+    """)
+    return
+
+
+@app.cell
+def _():
+    ner = pipeline(task="ner", aggregation_strategy="simple")
+    ner("My name is Mickey Mouse and I work at Disney World in Florida.")
+    return
+
+
 if __name__ == "__main__":
     app.run()
