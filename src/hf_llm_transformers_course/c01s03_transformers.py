@@ -109,5 +109,22 @@ def _():
     return
 
 
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Fill Mask
+
+    Predicts missing words in a sentence.
+    """)
+    return
+
+
+@app.cell
+def _():
+    unmasker = pipeline(task="fill-mask")
+    unmasker("This course will teach you all about <mask> models.", top_k=2)
+    return
+
+
 if __name__ == "__main__":
     app.run()
