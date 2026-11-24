@@ -68,5 +68,25 @@ def _(classifier_sentiment):
     return
 
 
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Zero Shot Classification
+
+    Accepts labels to which to assign the text. Returns the labels with a confidence score corresponding to each.
+    """)
+    return
+
+
+@app.cell
+def _():
+    classifier_zero_shot = pipeline("zero-shot-classification")
+    classifier_zero_shot(
+        "This is a course about the Transformers library.",
+        candidate_labels=["education", "politics", "business"],
+    )
+    return
+
+
 if __name__ == "__main__":
     app.run()
