@@ -38,5 +38,33 @@ def _():
     return
 
 
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Sentiment Analysis
+    """)
+    return
+
+
+@app.cell
+def _():
+    classifier_sentiment = pipeline("sentiment-analysis")
+    classifier_sentiment(
+        "I've been waiting for a HuggingFace course my whole life."
+    )
+    return (classifier_sentiment,)
+
+
+@app.cell
+def _(classifier_sentiment):
+    classifier_sentiment(
+        [
+            "I've been waiting for a HuggingFace course my whole life.",
+            "I hate this so much!",
+        ]
+    )
+    return
+
+
 if __name__ == "__main__":
     app.run()
