@@ -50,19 +50,19 @@ def _():
 
 @app.cell
 def _():
-    classifier_sentiment = pipeline("sentiment-analysis")
+    sentiment_classifier = pipeline("sentiment-analysis")
 
     with mo.persistent_cache(name="classifier_sentiment_1"):
-        classifier_sentiment(
+        sentiment_classifier(
             "I've been waiting for a HuggingFace course my whole life."
         )
-    return (classifier_sentiment,)
+    return (sentiment_classifier,)
 
 
 @app.cell
-def _(classifier_sentiment):
+def _(sentiment_classifier):
     with mo.persistent_cache(name="classifier_sentiment_2"):
-        classifier_sentiment(
+        sentiment_classifier(
             [
                 "I've been waiting for a HuggingFace course my whole life.",
                 "I hate this so much!",
