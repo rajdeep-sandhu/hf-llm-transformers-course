@@ -148,7 +148,9 @@ def _():
 @app.cell
 def _():
     ner = pipeline(task="ner", aggregation_strategy="simple")
-    ner("My name is Mickey Mouse and I work at Disney World in Florida.")
+
+    with mo.persistent_cache(name="ner"):
+        ner("My name is Mickey Mouse and I work at Disney World in Florida.")
     return
 
 
