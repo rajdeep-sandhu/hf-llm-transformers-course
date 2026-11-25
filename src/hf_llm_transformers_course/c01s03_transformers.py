@@ -1,3 +1,5 @@
+"""Chapter 1, Section 3: Transformers, What Can They Do?"""
+
 # /// script
 # dependencies = [
 #     "marimo",
