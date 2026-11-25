@@ -132,11 +132,17 @@ def _():
     text_generator = pipeline(task="text-generation", model="distilgpt2")
 
     with mo.persistent_cache(name="text_generator"):
-        text_generator(
+        generated_text = text_generator(
             "In this course, we will teach you how to",
             max_length=30,
             num_return_sequences=2,
         )
+    return (generated_text,)
+
+
+@app.cell
+def _(generated_text):
+    generated_text
     return
 
 
