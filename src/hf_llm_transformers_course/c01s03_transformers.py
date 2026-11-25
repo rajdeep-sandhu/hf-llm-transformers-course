@@ -162,9 +162,15 @@ def _():
     unmasker = pipeline(task="fill-mask")
 
     with mo.persistent_cache(name="unmasker"):
-        unmasker(
+        fill_predictions: list[dict[str, object]] = unmasker(
             "This course will teach you all about <mask> models.", top_k=2
         )
+    return (fill_predictions,)
+
+
+@app.cell
+def _(fill_predictions: list[dict[str, object]]):
+    fill_predictions
     return
 
 
