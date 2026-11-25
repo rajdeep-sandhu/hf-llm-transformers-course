@@ -51,20 +51,23 @@ def _():
 @app.cell
 def _():
     classifier_sentiment = pipeline("sentiment-analysis")
-    classifier_sentiment(
-        "I've been waiting for a HuggingFace course my whole life."
-    )
+
+    with mo.persistent_cache(name="classifier_sentiment_1"):
+        classifier_sentiment(
+            "I've been waiting for a HuggingFace course my whole life."
+        )
     return (classifier_sentiment,)
 
 
 @app.cell
 def _(classifier_sentiment):
-    classifier_sentiment(
-        [
-            "I've been waiting for a HuggingFace course my whole life.",
-            "I hate this so much!",
-        ]
-    )
+    with mo.persistent_cache(name="classifier_sentiment_2"):
+        classifier_sentiment(
+            [
+                "I've been waiting for a HuggingFace course my whole life.",
+                "I hate this so much!",
+            ]
+        )
     return
 
 
