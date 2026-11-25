@@ -123,6 +123,8 @@ def _():
     ## Text Generation
 
     Autocompletes a given prompt.
+
+    - The output is not cached, as this is meant to demonstrate different text generated on each run.
     """)
     return
 
