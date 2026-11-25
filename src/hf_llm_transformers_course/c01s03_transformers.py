@@ -101,10 +101,10 @@ def _():
 
 @app.cell
 def _():
-    classifier_zero_shot = pipeline("zero-shot-classification")
+    zero_shot_classifier = pipeline("zero-shot-classification")
 
     with mo.persistent_cache(name="classifier_zero_shot"):
-        zero_shot_classification: dict[str, object] = classifier_zero_shot(
+        zero_shot_classification: dict[str, object] = zero_shot_classifier(
             "This is a course about the Transformers library.",
             candidate_labels=["education", "politics", "business"],
         )
