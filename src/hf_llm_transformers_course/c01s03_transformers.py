@@ -84,10 +84,12 @@ def _():
 @app.cell
 def _():
     classifier_zero_shot = pipeline("zero-shot-classification")
-    classifier_zero_shot(
-        "This is a course about the Transformers library.",
-        candidate_labels=["education", "politics", "business"],
-    )
+
+    with mo.persistent_cache(name="classifier_zero_shot"):
+        classifier_zero_shot(
+            "This is a course about the Transformers library.",
+            candidate_labels=["education", "politics", "business"],
+        )
     return
 
 
