@@ -36,8 +36,9 @@ def _():
         ```
 
     - The notebook contains examples in addition to those from the course.
-    - Results are cached to disk where possible for expensive computations. The first run will, however, take longer.
-    """)
+    - Results are cached to disk where possible for expensive computations.
+    - The first run will, however, take longer due to model downloads and initial computation.
+    """)  
     return
 
 
