@@ -40,7 +40,7 @@ def _():
     - The notebook contains examples in addition to those from the course.
     - Results are cached to disk where possible for expensive computations.
     - The first run will, however, take longer due to model downloads and initial computation.
-    """)  
+    """)
     return
 
 
@@ -104,10 +104,16 @@ def _():
     classifier_zero_shot = pipeline("zero-shot-classification")
 
     with mo.persistent_cache(name="classifier_zero_shot"):
-        classifier_zero_shot(
+        zero_shot_classification: dict[str, object] = classifier_zero_shot(
             "This is a course about the Transformers library.",
             candidate_labels=["education", "politics", "business"],
         )
+    return (zero_shot_classification,)
+
+
+@app.cell
+def _(zero_shot_classification: dict[str, object]):
+    zero_shot_classification
     return
 
 
