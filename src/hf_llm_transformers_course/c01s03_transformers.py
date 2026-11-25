@@ -190,7 +190,15 @@ def _():
     ner = pipeline(task="ner", aggregation_strategy="simple")
 
     with mo.persistent_cache(name="ner"):
-        ner("My name is Mickey Mouse and I work at Disney World in Florida.")
+        named_entities: list[dict[str, object]] = ner(
+            "My name is Mickey Mouse and I work at Disney World in Florida."
+        )
+    return (named_entities,)
+
+
+@app.cell
+def _(named_entities: list[dict[str, object]]):
+    named_entities
     return
 
 
