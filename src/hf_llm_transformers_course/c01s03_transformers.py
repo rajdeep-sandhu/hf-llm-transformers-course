@@ -60,6 +60,7 @@ def classify_sentiment(text: str | list[str]):
     Args:
         text (str | list[str]): Text to classsify
     """
+    # pyrefly: ignore[no-matching-overload]
     sentiment_classifier = pipeline("sentiment-analysis")
 
     result = sentiment_classifier(text)
@@ -164,6 +165,7 @@ def _():
 
 @app.cell
 def _():
+    # pyrefly: ignore[no-matching-overload]
     ner = pipeline(task="ner", aggregation_strategy="simple")
 
     with mo.persistent_cache(name="ner"):
