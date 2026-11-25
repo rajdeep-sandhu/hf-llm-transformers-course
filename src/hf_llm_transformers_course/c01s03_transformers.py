@@ -51,26 +51,37 @@ def _():
     return
 
 
-@app.cell
-def _():
+@app.function
+@mo.persistent_cache
+def classify_sentiment(text: str | list[str]):
+    """Classify sentiment for provided text.
+
+    Args:
+        text (str | list[str]): Text to classsify
+    """
     sentiment_classifier = pipeline("sentiment-analysis")
 
-    with mo.persistent_cache(name="classifier_sentiment_1"):
-        sentiment_classifier(
-            "I've been waiting for a HuggingFace course my whole life."
-        )
-    return (sentiment_classifier,)
+    result = sentiment_classifier(text)
+
+    return result
 
 
 @app.cell
-def _(sentiment_classifier):
-    with mo.persistent_cache(name="classifier_sentiment_2"):
-        sentiment_classifier(
-            [
-                "I've been waiting for a HuggingFace course my whole life.",
-                "I hate this so much!",
-            ]
-        )
+def _():
+    classify_sentiment(
+        text="I've been waiting for a HuggingFace course my whole life."
+    )
+    return
+
+
+@app.cell
+def _():
+    classify_sentiment(
+        text=[
+            "I've been waiting for a HuggingFace course my whole life.",
+            "I hate this so much!",
+        ]
+    )
     return
 
 
@@ -134,7 +145,9 @@ def _():
     unmasker = pipeline(task="fill-mask")
 
     with mo.persistent_cache(name="unmasker"):
-        unmasker("This course will teach you all about <mask> models.", top_k=2)
+        unmasker(
+            "This course will teach you all about <mask> models.", top_k=2
+        )
     return
 
 
