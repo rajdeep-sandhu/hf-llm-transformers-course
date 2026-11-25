@@ -8,6 +8,8 @@
 # requires-python = ">=3.15"
 # ///
 
+# ruff: noqa: E501
+
 import marimo
 
 __generated_with = "0.25.2"
