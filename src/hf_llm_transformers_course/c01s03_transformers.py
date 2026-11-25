@@ -187,10 +187,10 @@ def _():
 @app.cell
 def _():
     # pyrefly: ignore[no-matching-overload]
-    ner = pipeline(task="ner", aggregation_strategy="simple")
+    entity_recognizer = pipeline(task="ner", aggregation_strategy="simple")
 
     with mo.persistent_cache(name="ner"):
-        named_entities: list[dict[str, object]] = ner(
+        named_entities: list[dict[str, object]] = entity_recognizer(
             "My name is Mickey Mouse and I work at Disney World in Florida."
         )
     return (named_entities,)
