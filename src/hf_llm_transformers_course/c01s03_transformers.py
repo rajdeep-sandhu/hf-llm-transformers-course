@@ -133,7 +133,7 @@ def _():
 def _():
     text_generator = pipeline(task="text-generation", model="distilgpt2")
 
-    generated_text = text_generator(
+    generated_text: list[dict[str, str]] = text_generator(
         "In this course, we will teach you how to",
         max_length=30,
         num_return_sequences=2,
@@ -142,7 +142,7 @@ def _():
 
 
 @app.cell
-def _(generated_text):
+def _(generated_text: list[dict[str, str]]):
     generated_text
     return
 
