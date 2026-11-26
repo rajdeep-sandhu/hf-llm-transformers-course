@@ -3,6 +3,7 @@
 # /// script
 # dependencies = [
 #     "marimo",
+#     "torch==2.15.0",
 #     "transformers[torch, sentencepiece]==5.24.0",
 # ]
 # requires-python = ">=3.15"
@@ -17,7 +18,12 @@ app = marimo.App(width="full", app_title="Transformers, What Can They Do?")
 
 with app.setup:
     import marimo as mo
-    from transformers import pipeline
+    import torch
+    from transformers import (
+        AutoModelForQuestionAnswering,
+        AutoTokenizer,
+        pipeline,
+    )
 
 
 @app.cell(hide_code=True)
@@ -228,7 +234,7 @@ def _():
             ),
         }
     ]
-    return question_answerer, question_messages
+    return context, question, question_answerer, question_messages
 
 
 @app.cell
@@ -241,6 +247,90 @@ def _(question_answerer, question_messages: list[dict[str, str]]):
 @app.cell
 def _(answer: list[dict[str, str]]):
     answer
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### Question Answering using `AutoModelForQuestionAnswering`
+
+    **Limitations**
+
+    - The score may differ from the original `"question-answering"` pipeline due to differences in special-token handling.
+    - This does not implement batching, sliding context windows or unanswerable question handling.
+    - The confidence score represents the model's estimated probability for the answer span, not a calibrated probability that the answer is correct.
+    """)
+
+
+@app.function
+@mo.persistent_cache
+def automodel_question_answerer(
+    question: str, context: str, max_answer_length: int
+) -> dict[str, object]:
+    """Answer a question using AutoModelForQuestionAnswering.
+
+    Args:
+        context (str): Context from which to extract the answer
+        question (str): The question asked
+        max_answer_length (int): Maximum length for answer
+    """
+    model_name: str = "distilbert/distilbert-base-cased-distilled-squad"
+
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForQuestionAnswering.from_pretrained(model_name)
+
+    inputs = tokenizer(
+        question, context, return_tensors="pt", return_offsets_mapping=True
+    )
+
+    offsets = inputs.pop("offset_mapping")[0]
+
+    context_mask = torch.tensor(
+        [seq_id == 1 for seq_id in inputs.sequence_ids()]
+    )
+
+    with torch.inference_mode():
+        outputs = model(**inputs)
+
+    # exclude question and special tokens
+    start_logits = outputs.start_logits[0].masked_fill(
+        ~context_mask, -torch.inf
+    )
+    end_logits = outputs.end_logits[0].masked_fill(
+        ~context_mask, -torch.inf
+    )
+
+    # convert logits to probabilities
+    start_probs = torch.softmax(start_logits, dim=0)
+    end_probs = torch.softmax(end_logits, dim=0)
+
+    # calculate scores for possible answer spans
+    scores = torch.outer(start_probs, end_probs)
+
+    # exclude invalid and excessively long spans
+    scores = scores.triu().tril(max_answer_length - 1)
+
+    # select the highest scoring span
+    start_token, end_token = divmod(
+        scores.argmax().item(), scores.shape[1]
+    )
+
+    start = offsets[start_token][0].item()
+    end = offsets[end_token][1].item()
+
+    return {
+        "score": scores[start_token, end_token].item(),
+        "start": start,
+        "end": end,
+        "answer": context[start:end],
+    }
+
+
+@app.cell
+def _(context: str, question: str):
+    automodel_question_answerer(
+        question=question, context=context, max_answer_length=15
+    )
 
 
 if __name__ == "__main__":
