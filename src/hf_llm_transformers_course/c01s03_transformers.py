@@ -12,7 +12,7 @@
 
 import marimo
 
-__generated_with = "0.25.2"
+__generated_with = "0.26.0"
 app = marimo.App(width="full", app_title="Transformers, What Can They Do?")
 
 with app.setup:
@@ -25,7 +25,6 @@ def _():
     mo.md(r"""
     # Transformers, what can they do?
     """)
-    return
 
 
 @app.cell(hide_code=True)
@@ -41,7 +40,6 @@ def _():
     - Results are cached to disk where possible for expensive computations.
     - The first run will, however, take longer due to model downloads and initial computation.
     """)
-    return
 
 
 @app.cell(hide_code=True)
@@ -51,7 +49,6 @@ def _():
 
     Assigns a sentiment and confidence score to the text.
     """)
-    return
 
 
 @app.function
@@ -75,7 +72,6 @@ def _():
     classify_sentiment(
         text="I've been waiting for a HuggingFace course my whole life."
     )
-    return
 
 
 @app.cell
@@ -86,7 +82,6 @@ def _():
             "I hate this so much!",
         ]
     )
-    return
 
 
 @app.cell(hide_code=True)
@@ -96,7 +91,6 @@ def _():
 
     Accepts labels to which to assign the text. Returns the labels with a confidence score corresponding to each.
     """)
-    return
 
 
 @app.cell
@@ -114,7 +108,6 @@ def _():
 @app.cell
 def _(zero_shot_classification: dict[str, object]):
     zero_shot_classification
-    return
 
 
 @app.cell(hide_code=True)
@@ -126,7 +119,6 @@ def _():
 
     - The output is not cached, as this is meant to demonstrate different text generated on each run.
     """)
-    return
 
 
 @app.cell
@@ -144,7 +136,6 @@ def _():
 @app.cell
 def _(generated_text: list[dict[str, str]]):
     generated_text
-    return
 
 
 @app.cell(hide_code=True)
@@ -154,7 +145,6 @@ def _():
 
     Predicts missing words in a sentence.
     """)
-    return
 
 
 @app.cell
@@ -171,7 +161,6 @@ def _():
 @app.cell
 def _(fill_predictions: list[dict[str, object]]):
     fill_predictions
-    return
 
 
 @app.cell(hide_code=True)
@@ -181,7 +170,6 @@ def _():
 
     Identifies entities like persons, organisations or locations in a sentence.
     """)
-    return
 
 
 @app.cell
@@ -199,7 +187,6 @@ def _():
 @app.cell
 def _(named_entities: list[dict[str, object]]):
     named_entities
-    return
 
 
 @app.cell(hide_code=True)
@@ -211,7 +198,6 @@ def _():
 
     - Text generation is used with an instruction-tuned chat model, as the `"question-answering"` task has been removed in `transformers` v5.
     """)
-    return
 
 
 @app.cell
@@ -248,7 +234,6 @@ def _(question_answerer, question_messages: list[dict[str, str]]):
 @app.cell
 def _(answer: list[dict[str, str]]):
     answer
-    return
 
 
 if __name__ == "__main__":
