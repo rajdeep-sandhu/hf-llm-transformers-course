@@ -228,7 +228,7 @@ def _():
 def generative_question_answerer(
     question: str, context: str
 ) -> list[dict[str, str]]:
-    """Answer a question using AutoModelForQuestionAnswering.
+    """Answer a question using text generation.
 
     Args:
         context (str): Context from which to extract the answer
