@@ -206,13 +206,6 @@ def _():
     """)
 
 
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ### Question Answering using Text Generation
-    """)
-
-
 @app.cell
 def _():
     context: str = (
@@ -220,6 +213,13 @@ def _():
     )
     question: str = "Where do I work?"
     return context, question
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### Question Answering using Text Generation
+    """)
 
 
 @app.function
