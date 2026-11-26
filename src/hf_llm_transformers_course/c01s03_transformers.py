@@ -215,16 +215,30 @@ def _():
 
 @app.cell
 def _():
-    question_answerer = pipeline(
-        task="text-generation", model="Qwen/Qwen2.5-0.5B-Instruct"
-    )
-
     context: str = (
         "My name is Mickey Mouse and I work at Disney World in Florida."
     )
     question: str = "Where do I work?"
+    return context, question
 
-    question_messages: list[dict[str, str]] = [
+
+@app.function
+def generative_question_answerer(
+    question: str, context: str
+) -> list[dict[str, str]]:
+    """Answer a question using AutoModelForQuestionAnswering.
+
+    Args:
+        context (str): Context from which to extract the answer
+        question (str): The question asked
+    """
+    model_name: str = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    text_generator = pipeline(
+        task="text-generation", model=model_name
+    )
+
+    message: list[dict[str, str]] = [
         {
             "role": "user",
             "content": (
@@ -234,19 +248,15 @@ def _():
             ),
         }
     ]
-    return context, question, question_answerer, question_messages
+
+    answer: list[dict[str, str]] = text_generator(message)
+
+    return answer
 
 
 @app.cell
-def _(question_answerer, question_messages: list[dict[str, str]]):
-    with mo.persistent_cache(name="question_answerer"):
-        answer: list[dict[str, str]] = question_answerer(question_messages)
-    return (answer,)
-
-
-@app.cell
-def _(answer: list[dict[str, str]]):
-    answer
+def _(context: str, question: str):
+    generative_question_answerer(question=question, context=context)
 
 
 @app.cell(hide_code=True)
