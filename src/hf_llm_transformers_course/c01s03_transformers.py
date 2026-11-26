@@ -202,5 +202,54 @@ def _(named_entities: list[dict[str, object]]):
     return
 
 
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Extractive Question Answering
+
+    Extracts answers to a question from a given context.
+
+    - Text generation is used with an instruction-tuned chat model, as the `"question-answering"` task has been removed in `transformers` v5.
+    """)
+    return
+
+
+@app.cell
+def _():
+    question_answerer = pipeline(
+        task="text-generation", model="Qwen/Qwen2.5-0.5B-Instruct"
+    )
+
+    context: str = (
+        "My name is Mickey Mouse and I work at Disney World in Florida."
+    )
+    question: str = "Where do I work?"
+
+    question_messages: list[dict[str, str]] = [
+        {
+            "role": "user",
+            "content": (
+                "Answer the question using only the provided context.\n"
+                f"Context: {context}\n"
+                f"Question: {question}"
+            ),
+        }
+    ]
+    return question_answerer, question_messages
+
+
+@app.cell
+def _(question_answerer, question_messages: list[dict[str, str]]):
+    with mo.persistent_cache(name="question_answerer"):
+        answer: list[dict[str, str]] = question_answerer(question_messages)
+    return (answer,)
+
+
+@app.cell
+def _(answer: list[dict[str, str]]):
+    answer
+    return
+
+
 if __name__ == "__main__":
     app.run()
