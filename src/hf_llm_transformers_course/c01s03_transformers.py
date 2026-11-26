@@ -202,7 +202,8 @@ def _():
 
     Extracts answers to a question from a given context.
 
-    - Text generation is used with an instruction-tuned chat model, as the `"question-answering"` task has been removed in `transformers` v5.
+    - **Text generation** is used with an instruction-tuned chat model, as the `"question-answering"` task has been removed in `transformers` v5.
+    - Alternatively `AutoModelForQuestionAnswering` can be used.
     """)
 
 
