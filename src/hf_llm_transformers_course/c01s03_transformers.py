@@ -200,6 +200,13 @@ def _():
     """)
 
 
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### Question Answering using Text Generation
+    """)
+
+
 @app.cell
 def _():
     question_answerer = pipeline(
