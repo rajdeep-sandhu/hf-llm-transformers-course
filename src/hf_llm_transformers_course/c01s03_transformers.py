@@ -17,6 +17,8 @@ __generated_with = "0.26.0"
 app = marimo.App(width="full", app_title="Transformers, What Can They Do?")
 
 with app.setup:
+    from typing import Any
+
     import marimo as mo
     import torch
     from transformers import (
@@ -236,9 +238,7 @@ def generative_question_answerer(
     """
     model_name: str = "Qwen/Qwen2.5-0.5B-Instruct"
 
-    text_generator = pipeline(
-        task="text-generation", model=model_name
-    )
+    text_generator = pipeline(task="text-generation", model=model_name)
 
     message: list[dict[str, str]] = [
         {
@@ -343,6 +343,78 @@ def _(context: str, question: str):
     automodel_question_answerer(
         question=question, context=context, max_answer_length=15
     )
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Summarization
+
+    Summarizes long text.
+    """)
+
+
+@app.cell
+def _():
+    long_text: str = """
+        America has changed dramatically during recent years. Not only has the number of 
+        graduates in traditional engineering disciplines such as mechanical, civil, 
+        electrical, chemical, and aeronautical engineering declined, but in most of 
+        the premier American universities engineering curricula now concentrate on 
+        and encourage largely the study of engineering science. As a result, there 
+        are declining offerings in engineering subjects dealing with infrastructure, 
+        the environment, and related issues, and greater concentration on high 
+        technology subjects, largely supporting increasingly complex scientific 
+        developments. While the latter is important, it should not be at the expense 
+        of more traditional engineering.
+
+        Rapidly developing economies such as China and India, as well as other 
+        industrial countries in Europe and Asia, continue to encourage and advance 
+        the teaching of engineering. Both China and India, respectively, graduate 
+        six and eight times as many traditional engineers as does the United States. 
+        Other industrial countries at minimum maintain their output, while America 
+        suffers an increasingly serious decline in the number of engineering graduates 
+        and a lack of well-educated engineers.
+    """
+    return (long_text,)
+
+
+@app.function
+@mo.persistent_cache
+def generative_summarizer(context: str, max_new_tokens: int = 256) -> list[dict[str, str]]:
+    """Summarize text question using text generation.
+
+    Args:
+        context (str): Text to summarize.
+        max_new_tokens (int): Maximum number of tokens to generate.
+    """
+    model_name: str = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    text_generator = pipeline(task="text-generation", model=model_name)
+
+    message: list[dict[str, str]] = [
+        {
+            "role": "user",
+            "content": (
+                "Summarize the text in the provided context.\n"
+                f"Context: {context}"
+            ),
+        }
+    ]
+
+    summary: list[dict[str, Any]] = text_generator(
+        message,
+        do_sample=False,
+        return_full_text=False,
+        max_new_tokens=max_new_tokens,
+    )
+
+    return summary
+
+
+@app.cell
+def _(long_text: str):
+    generative_summarizer(context=long_text)
 
 
 if __name__ == "__main__":
