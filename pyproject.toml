@@ -8,7 +8,7 @@ authors = [
 ]
 requires-python = ">=3.15"
 dependencies = [
-    "marimo[recommended, lsp]>=0.25.2",
+    "marimo[recommended, lsp]>=0.26.0",
     "transformers[torch, sentencepiece]>=5.24.0",
 ]
 
