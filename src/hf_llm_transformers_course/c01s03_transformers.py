@@ -224,6 +224,7 @@ def _():
 
 
 @app.function
+@mo.persistent_cache
 def generative_question_answerer(
     question: str, context: str
 ) -> list[dict[str, str]]:
