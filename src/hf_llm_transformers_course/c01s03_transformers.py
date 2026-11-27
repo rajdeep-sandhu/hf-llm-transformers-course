@@ -386,7 +386,7 @@ def _():
 def generative_summarizer(
     context: str, max_new_tokens: int = 256
 ) -> list[dict[str, str]]:
-    """Summarize text question using text generation.
+    """Summarize text using text generation.
 
     Args:
         context (str): Text to summarize.
