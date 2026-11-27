@@ -444,7 +444,7 @@ def _():
 def generative_translator(
     context: str, target_language: str, max_new_tokens: int = 512
 ) -> list[dict[str, str]]:
-    """Translate text question using text generation.
+    """Translate text using text generation.
 
     Args:
         context (str): Text to translate.
