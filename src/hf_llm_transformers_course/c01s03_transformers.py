@@ -381,7 +381,9 @@ def _():
 
 @app.function
 @mo.persistent_cache
-def generative_summarizer(context: str, max_new_tokens: int = 256) -> list[dict[str, str]]:
+def generative_summarizer(
+    context: str, max_new_tokens: int = 256
+) -> list[dict[str, str]]:
     """Summarize text question using text generation.
 
     Args:
@@ -415,6 +417,65 @@ def generative_summarizer(context: str, max_new_tokens: int = 256) -> list[dict[
 @app.cell
 def _(long_text: str):
     generative_summarizer(context=long_text)
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Translation
+
+    Translates text from one language into another.
+    """)
+
+
+@app.cell
+def _():
+    text_to_translate: str = "Ce cours est produit par Hugging Face."
+    target_language: str = "English"
+    return target_language, text_to_translate
+
+
+@app.function
+@mo.persistent_cache
+def generative_translator(
+    context: str, target_language: str, max_new_tokens: int = 512
+) -> list[dict[str, str]]:
+    """Translate text question using text generation.
+
+    Args:
+        context (str): Text to translate.
+        target_language (str): Language to tranlate into. Should be supported by the model.
+        max_new_tokens (int): Maximum number of tokens to generate.
+    """
+    model_name: str = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    text_generator = pipeline(task="text-generation", model=model_name)
+
+    message: list[dict[str, str]] = [
+        {
+            "role": "user",
+            "content": (
+                "Translate the text in the provided context into the target language.\n"
+                f"Context: {context}\n"
+                f"Target Language: {target_language}"
+            ),
+        }
+    ]
+
+    translation: list[dict[str, Any]] = text_generator(
+        message,
+        do_sample=False,
+        return_full_text=False,
+        max_new_tokens=max_new_tokens,
+    )
+
+    return translation
+
+
+@app.cell
+def _(target_language: str, text_to_translate: str):
+    generative_translator(context=text_to_translate,
+                          target_language=target_language)
 
 
 if __name__ == "__main__":
