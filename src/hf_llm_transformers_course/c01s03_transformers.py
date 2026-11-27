@@ -427,6 +427,8 @@ def _():
     ## Translation
 
     Translates text from one language into another.
+
+    - **Text generation** is used with an instruction-tuned chat model, as the `"translation"` task has been removed in `transformers` v5.
     """)
 
 
