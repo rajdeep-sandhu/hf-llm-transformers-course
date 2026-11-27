@@ -351,6 +351,8 @@ def _():
     ## Summarization
 
     Summarizes long text.
+
+    - **Text generation** is used with an instruction-tuned chat model, as the `"summarization"` task has been removed in `transformers` v5.
     """)
 
 
