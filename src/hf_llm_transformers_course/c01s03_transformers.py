@@ -4,6 +4,7 @@
 # dependencies = [
 #     "marimo",
 #     "torch==2.15.0",
+#     "torchvision==0.29.2",
 #     "transformers[torch, sentencepiece]==5.24.0",
 # ]
 # requires-python = ">=3.15"
@@ -21,6 +22,7 @@ with app.setup:
 
     import marimo as mo
     import torch
+    import torchvision
     from transformers import (
         AutoModelForQuestionAnswering,
         AutoTokenizer,
@@ -189,7 +191,12 @@ def _():
         named_entities: list[dict[str, object]] = entity_recognizer(
             "My name is Mickey Mouse and I work at Disney World in Florida."
         )
-    return (named_entities,)
+    return entity_recognizer, named_entities
+
+
+@app.cell
+def _(entity_recognizer):
+    entity_recognizer
 
 
 @app.cell
