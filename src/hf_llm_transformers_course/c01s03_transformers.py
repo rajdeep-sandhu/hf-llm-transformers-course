@@ -22,7 +22,7 @@ with app.setup:
 
     import marimo as mo
     import torch
-    import torchvision
+
     from transformers import (
         AutoModelForQuestionAnswering,
         AutoTokenizer,
