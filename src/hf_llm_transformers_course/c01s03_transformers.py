@@ -493,6 +493,8 @@ def _(target_language: str, text_to_translate: str):
 def _():
     mo.md(r"""
     ## Image Classification
+
+    Identifies objects in an image.
     """)
 
 
@@ -508,7 +510,7 @@ def classify_image(image_url: str):
     """Classify the provided image
 
     Args:
-        imagge_url: url of the image.
+        image_url: url of the image.
     """
     image_classifier = pipeline(
         task="image-classification", model="google/vit-base-patch16-224"
