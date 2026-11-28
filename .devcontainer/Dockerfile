@@ -8,8 +8,9 @@ ENV PYTHONUNBUFFERED=1
 #    && rm -rf /tmp/pip-tmp
 
 # Node.js is required for Pyrefly language server integration in marimo.
+# ffmpeg is required for audio processing in marimo.
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get install -y --no-install-recommends ffmpeg nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pipx install uv
