@@ -507,7 +507,7 @@ def _():
 @app.function
 @mo.persistent_cache
 def classify_image(image_url: str):
-    """Classify the provided image
+    """Classify the provided image.
 
     Args:
         image_url: url of the image.
