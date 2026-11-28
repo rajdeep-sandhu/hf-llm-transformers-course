@@ -22,7 +22,6 @@ with app.setup:
 
     import marimo as mo
     import torch
-
     from transformers import (
         AutoModelForQuestionAnswering,
         AutoTokenizer,
@@ -485,8 +484,52 @@ def generative_translator(
 
 @app.cell
 def _(target_language: str, text_to_translate: str):
-    generative_translator(context=text_to_translate,
-                          target_language=target_language)
+    generative_translator(
+        context=text_to_translate, target_language=target_language
+    )
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Image Classification
+    """)
+
+
+@app.cell
+def _():
+    image_url = "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/pipeline-cat-chonk.jpeg"
+    return (image_url,)
+
+
+@app.function
+@mo.persistent_cache
+def classify_image(image_url: str):
+    """Classify the provided image
+
+    Args:
+        imagge_url: url of the image.
+    """
+    image_classifier = pipeline(
+        task="image-classification", model="google/vit-base-patch16-224"
+    )
+
+    return image_classifier(image_url)
+
+
+@app.cell
+def _(image_url):
+    mo.vstack(
+        [
+            mo.image(
+                src=image_url,
+                width=500,
+                alt="Image for classification",
+                rounded=True,
+            ),
+            classify_image(image_url=image_url),
+        ]
+    )
 
 
 if __name__ == "__main__":
